@@ -39,7 +39,7 @@ _ env: inout Environment, _ services: inout Services) throws {
     
     // migration
       var migrations = MigrationConfig()
-      migrations.add(model: PeriodicTable.self, database: .mysql)
+      migrations.add(model: User.self, database: .mysql)
       services.register(migrations)
 
 }
