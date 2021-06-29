@@ -11,13 +11,12 @@ let package = Package(
                 from: "3.0.0"),
 
        // 1
-       .package(name: "FluentMySQL",url: "https://github.com/vapor/fluent-mysql.git",
-                from: "3.0.0"),
+       .package(name: "FluentPostgreSQL",url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc"),
         .package(name: "Leaf",url: "https://github.com/vapor/leaf.git", from: "3.0.0")
      ],
      targets: [
        // 2
-       .target(name: "App", dependencies: ["FluentMySQL","Vapor","Leaf"]),
+       .target(name: "App", dependencies: ["FluentPostgreSQL","Vapor","Leaf"]),
        .target(name: "Run", dependencies: ["App"]),
        .testTarget(name: "AppTests", dependencies: ["App"]),
      ]

@@ -1,6 +1,6 @@
-import FluentMySQL  // changed
+import FluentPostgreSQL  // changed
 import Vapor
-final class User: MySQLModel {
+final class User: PostgreSQLModel {
   var id: Int?
   var username: String
   init(id: Int? = nil, username: String) {
