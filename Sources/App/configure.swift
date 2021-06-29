@@ -1,5 +1,5 @@
 import Vapor
-import FluentMySQL
+import FluentPostgreSQL
 import Leaf
 
 // configures your application
@@ -10,9 +10,7 @@ _ env: inout Environment, _ services: inout Services) throws {
 
     // register routes
     try routes(app)
-    try services.register(MySQLProvider())
-    
-    try services.register(FluentMySQLProvider())
+    try services.register(FluentPostgreSQLProvider())
     // router
       let router = EngineRouter.default()
       try routes(router)
@@ -26,20 +24,19 @@ _ env: inout Environment, _ services: inout Services) throws {
       middlewares.use(ErrorMiddleware.self)
       services.register(middlewares)
     // Database
-      var databases = DatabasesConfig()
+    let postgresqlConfig = PostgreSQLDatabaseConfig(
+        hostname: "127.0.0.1",
+        port: 5432,
+        username: "steven",
+        database: "mydb",
+        password: nil
+      )
+      services.register(postgresqlConfig)
     
-      let databaseConfig = MySQLDatabaseConfig(
-        hostname: "localhost",
-        username: "vapor",
-        password: "password",
-        database: "vapor")
-      let database = MySQLDatabase(config: databaseConfig)
-      databases.add(database: database, as: .mysql)
-      services.register(databases)
     
     // migration
       var migrations = MigrationConfig()
-      
+      migrations.add(model: User.self, database: .psql)
       services.register(migrations)
 
 }
