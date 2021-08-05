@@ -1,19 +1,21 @@
 import Vapor
+import Fluent
 
-final class UserController {
-    
-  func list(_ req: Request) throws -> Future<View> {
-    return User.query(on: req).all().flatMap { users in
-      let data = ["userlist": users]
-      return try req.view().render("userview", data)
+
+struct UserController: RouteCollection  {
+    func boot(routes: RoutesBuilder) throws {
+        let todos = routes.grouped("todos")
+                todos.get(use: index)
+                todos.post(use: create)
+
     }
-  }
     
-    func create(_ req: Request) throws -> Future<Response> {
-        return try req.content.decode(User.self).flatMap { user in
-          return user.save(on: req).map { _ in
-            return req.redirect(to: "users")
-          }
+    
+    func index(req: Request) throws -> String {
+            return "Hello"
         }
-      }
+
+        func create(req: Request) throws -> String {
+            return "Created"
+        }
 }

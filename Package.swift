@@ -9,20 +9,30 @@ let package = Package(
        .macOS(.v10_15)
     ],
     dependencies: [
-        .package(name: "Vapor",url: "https://github.com/vapor/vapor.git",
-                from: "3.0.0"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.3.0"),
 
-       // 1
-       .package(name: "FluentPostgreSQL",url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc"),
-        .package(name: "Leaf",url: "https://github.com/vapor/leaf.git", from: "3.0.0"),
+        .package(url:"https://github.com/vapor/fluent.git", from: "4.0.0-rc"),
+        .package(url:"https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0-rc"),
+        .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0-rc"),
+
+        .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
+        /*
         .package(name: "Crypto",url: "https://github.com/vapor/crypto.git", from: "3.0.0"),
+        */
         
      ],
      targets: [
        // 2
-       .target(name: "App", dependencies: ["Crypto","Random","FluentPostgreSQL","Vapor","Leaf"]),
-       .target(name: "Run", dependencies: ["App"]),
-       .testTarget(name: "AppTests", dependencies: ["App"]),
+       .target(name: "App", dependencies: [
+                .product(name: "Fluent", package: "fluent"),
+                .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
+                .product(name: "Vapor", package: "vapor"),
+                .product(name: "JWT", package: "jwt"),
+                .product(name: "Leaf", package: "leaf"),
+                ]),
+       .target(name: "Run", dependencies: [.target(name: "App"),]),
+       .testTarget(name: "AppTests", dependencies: [.target(name: "App"),
+            .product(name: "XCTVapor", package: "vapor"),
+        ])
      ]
-
 )

@@ -1,8 +1,10 @@
 import Vapor
 
-func routes(_ router: Router) throws {
-    let userController = UserController()  
-    router.get("users", use: userController.list)
+public func routes(_ app: Application) throws {
+    _ = UserController()  
+    //app.get("users", use: userController.list)
     
-    router.post("users", use: userController.create)
+    //app.post("users", use: userController.create)
+    
+    try app.register(collection: UserController())
 }
